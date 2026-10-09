@@ -1,0 +1,701 @@
+{
+  "info": {
+    "name": "EDABIP - Users API (Dheepanraj)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Run the app (mvn spring-boot:run) then run this collection top to bottom. Add User stores the generated id in {{userId}}."
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api/v1/users"
+    },
+    {
+      "key": "userId",
+      "value": "USR001"
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Happy path",
+      "item": [
+        {
+          "name": "List users (page 1)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}?page=1&size=10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "1"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                }
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Consistent JSON envelope', function () { const j = pm.response.json(); pm.expect(j).to.have.property('success'); pm.expect(j).to.have.property('message'); pm.expect(j).to.have.property('timestamp'); });",
+                  "pm.test('Has pagination', function(){ const d=pm.response.json().data; pm.expect(d).to.have.property('totalElements'); pm.expect(d.content).to.be.an('array'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List users - sorted by name desc",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}?sortBy=name&sortDir=desc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ],
+              "query": [
+                {
+                  "key": "sortBy",
+                  "value": "name"
+                },
+                {
+                  "key": "sortDir",
+                  "value": "desc"
+                }
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Consistent JSON envelope', function () { const j = pm.response.json(); pm.expect(j).to.have.property('success'); pm.expect(j).to.have.property('message'); pm.expect(j).to.have.property('timestamp'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Search users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}?search=alice",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "alice"
+                }
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Consistent JSON envelope', function () { const j = pm.response.json(); pm.expect(j).to.have.property('success'); pm.expect(j).to.have.property('message'); pm.expect(j).to.have.property('timestamp'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Filter by role + status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}?role=Editor&status=Active",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ],
+              "query": [
+                {
+                  "key": "role",
+                  "value": "Editor"
+                },
+                {
+                  "key": "status",
+                  "value": "Active"
+                }
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Consistent JSON envelope', function () { const j = pm.response.json(); pm.expect(j).to.have.property('success'); pm.expect(j).to.have.property('message'); pm.expect(j).to.have.property('timestamp'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "User stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/stats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "stats"
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Consistent JSON envelope', function () { const j = pm.response.json(); pm.expect(j).to.have.property('success'); pm.expect(j).to.have.property('message'); pm.expect(j).to.have.property('timestamp'); });",
+                  "pm.test('Has 4 counts', function(){ const d=pm.response.json().data; ['totalUsers','activeUsers','inactiveUsers','newThisMonth'].forEach(k=>pm.expect(d).to.have.property(k)); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get user",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "{{userId}}"
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Consistent JSON envelope', function () { const j = pm.response.json(); pm.expect(j).to.have.property('success'); pm.expect(j).to.have.property('message'); pm.expect(j).to.have.property('timestamp'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Add user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Priya Raman\",\n  \"email\": \"priya.raman@example.com\",\n  \"role\": \"Editor\",\n  \"status\": \"Active\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 201', function () { pm.response.to.have.status(201); });",
+                  "pm.test('Consistent JSON envelope', function () { const j = pm.response.json(); pm.expect(j).to.have.property('success'); pm.expect(j).to.have.property('message'); pm.expect(j).to.have.property('timestamp'); });",
+                  "pm.collectionVariables.set('userId', pm.response.json().data.userId);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Edit user",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "{{userId}}"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Priya R\",\n  \"email\": \"priya.raman@example.com\",\n  \"role\": \"Viewer\",\n  \"status\": \"Inactive\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Consistent JSON envelope', function () { const j = pm.response.json(); pm.expect(j).to.have.property('success'); pm.expect(j).to.have.property('message'); pm.expect(j).to.have.property('timestamp'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete user",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/{{userId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "{{userId}}"
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Consistent JSON envelope', function () { const j = pm.response.json(); pm.expect(j).to.have.property('success'); pm.expect(j).to.have.property('message'); pm.expect(j).to.have.property('timestamp'); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2. Error cases",
+      "item": [
+        {
+          "name": "Get - not found (404)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/USR999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "USR999"
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 404', function () { pm.response.to.have.status(404); });",
+                  "pm.test('Consistent JSON envelope', function () { const j = pm.response.json(); pm.expect(j).to.have.property('success'); pm.expect(j).to.have.property('message'); pm.expect(j).to.have.property('timestamp'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Add - validation errors (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"\",\n  \"email\": \"bad\",\n  \"role\": \"Boss\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Consistent JSON envelope', function () { const j = pm.response.json(); pm.expect(j).to.have.property('success'); pm.expect(j).to.have.property('message'); pm.expect(j).to.have.property('timestamp'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Add - duplicate email (409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Dup Alice\",\n  \"email\": \"alice@example.com\",\n  \"role\": \"User\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 409', function () { pm.response.to.have.status(409); });",
+                  "pm.test('Consistent JSON envelope', function () { const j = pm.response.json(); pm.expect(j).to.have.property('success'); pm.expect(j).to.have.property('message'); pm.expect(j).to.have.property('timestamp'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Add - malformed JSON (400)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{ \"name\": \"Broken\", ",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Consistent JSON envelope', function () { const j = pm.response.json(); pm.expect(j).to.have.property('success'); pm.expect(j).to.have.property('message'); pm.expect(j).to.have.property('timestamp'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List - invalid page/size (400)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}?page=0&size=500",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "500"
+                }
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Consistent JSON envelope', function () { const j = pm.response.json(); pm.expect(j).to.have.property('success'); pm.expect(j).to.have.property('message'); pm.expect(j).to.have.property('timestamp'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "List - invalid sortBy (400)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}?sortBy=password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ],
+              "query": [
+                {
+                  "key": "sortBy",
+                  "value": "password"
+                }
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 400', function () { pm.response.to.have.status(400); });",
+                  "pm.test('Consistent JSON envelope', function () { const j = pm.response.json(); pm.expect(j).to.have.property('success'); pm.expect(j).to.have.property('message'); pm.expect(j).to.have.property('timestamp'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Edit - not found (404)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/USR999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "USR999"
+              ]
+            },
+            "description": "",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Priya Raman\",\n  \"email\": \"priya.raman@example.com\",\n  \"role\": \"Editor\",\n  \"status\": \"Active\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 404', function () { pm.response.to.have.status(404); });",
+                  "pm.test('Consistent JSON envelope', function () { const j = pm.response.json(); pm.expect(j).to.have.property('success'); pm.expect(j).to.have.property('message'); pm.expect(j).to.have.property('timestamp'); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Delete - not found (404)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/USR999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "USR999"
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 404', function () { pm.response.to.have.status(404); });",
+                  "pm.test('Consistent JSON envelope', function () { const j = pm.response.json(); pm.expect(j).to.have.property('success'); pm.expect(j).to.have.property('message'); pm.expect(j).to.have.property('timestamp'); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "3. Bulk",
+      "item": [
+        {
+          "name": "Bulk delete users",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}?ids=USR014,USR015",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ],
+              "query": [
+                {
+                  "key": "ids",
+                  "value": "USR014,USR015"
+                }
+              ]
+            },
+            "description": ""
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('Status is 200', function () { pm.response.to.have.status(200); });",
+                  "pm.test('Consistent JSON envelope', function () { const j = pm.response.json(); pm.expect(j).to.have.property('success'); pm.expect(j).to.have.property('message'); pm.expect(j).to.have.property('timestamp'); });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
