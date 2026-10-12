@@ -28,10 +28,10 @@ mvn spring-boot:run
 ```
 `schema.sql` and `data.sql` run automatically on startup (15 seed users).
 
-* API base URL: `http://localhost:8080/api/v1/users`
-* Swagger UI: `http://localhost:8080/swagger-ui.html`
-* OpenAPI JSON: `http://localhost:8080/v3/api-docs`
-* H2 console: `http://localhost:8080/h2-console` (JDBC URL `jdbc:h2:mem:edabip`, user `sa`, empty password)
+* API base URL: `http://localhost:8081/api/users`
+* Swagger UI: `http://localhost:8081/swagger-ui.html`
+* OpenAPI JSON: `http://localhost:8081/v3/api-docs`
+* H2 console: `http://localhost:8081/h2-console` (JDBC URL `jdbc:h2:mem:edabip`, user `sa`, empty password)
 
 ### Option B – MySQL
 ```sql
