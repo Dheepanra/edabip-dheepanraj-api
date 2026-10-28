@@ -1,0 +1,598 @@
+{
+  "info": {
+    "name": "EDABIP Users API (Task 3)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080"
+    },
+    {
+      "key": "token",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login (ADMIN)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"alice@example.com\",\n  \"password\": \"Password@123\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const j = pm.response.json();",
+                  "if (j.data && j.data.token) { pm.collectionVariables.set('token', j.data.token); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Login (VIEWER)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "login"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"bob@example.com\",\n  \"password\": \"Password@123\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const j = pm.response.json();",
+                  "if (j.data && j.data.token) { pm.collectionVariables.set('token', j.data.token); }"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "register"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Priya Raman\",\n  \"email\": \"priya@example.com\",\n  \"password\": \"Password@123\"\n}"
+            },
+            "auth": {
+              "type": "noauth"
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const j = pm.response.json();",
+                  "if (j.data && j.data.token) { pm.collectionVariables.set('token', j.data.token); }"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "List users",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users?page=0&size=10&sort=name,asc&search=&roleId=",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "sort",
+                  "value": "name,asc"
+                },
+                {
+                  "key": "search",
+                  "value": ""
+                },
+                {
+                  "key": "roleId",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Filter users by role",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users?roleId=3&page=0&size=5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ],
+              "query": [
+                {
+                  "key": "roleId",
+                  "value": "3"
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "5"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "User stats",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/stats",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "stats"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get user",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Add user",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Kiran Das\",\n  \"email\": \"kiran@example.com\",\n  \"roleId\": 3,\n  \"status\": \"Active\",\n  \"password\": \"Password@123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Edit user",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/users/2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "2"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Bob Williams\",\n  \"email\": \"bob@example.com\",\n  \"roleId\": 3,\n  \"status\": \"Active\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete user",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/users/10",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "users",
+                "10"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Roles",
+      "item": [
+        {
+          "name": "List roles (with user count)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/roles?page=0&size=10&sort=name,asc&search=",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles"
+              ],
+              "query": [
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "10"
+                },
+                {
+                  "key": "sort",
+                  "value": "name,asc"
+                },
+                {
+                  "key": "search",
+                  "value": ""
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get role",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/roles/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Add role",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/roles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Support Agent\",\n  \"description\": \"Can view users and reports\",\n  \"status\": \"Active\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Add role (duplicate -> 409)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/roles",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Editor\",\n  \"description\": \"dup\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Edit role",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/roles/4",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles",
+                "4"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Business Analyst\",\n  \"description\": \"Can view and analyze reports\",\n  \"status\": \"Active\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Deactivate role",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/roles/4/deactivate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles",
+                "4",
+                "deactivate"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Activate role",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/roles/4/activate",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles",
+                "4",
+                "activate"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete role with users (-> 409)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/roles/1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles",
+                "1"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Delete role without users",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/roles/5",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles",
+                "5"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update role permissions",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/roles/2/permissions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "roles",
+                "2",
+                "permissions"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"permissionIds\": [\n    1,\n    2,\n    3,\n    4\n  ]\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Permissions",
+      "item": [
+        {
+          "name": "List permissions",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/permissions",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "permissions"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Permission matrix",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/permissions/matrix",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "permissions",
+                "matrix"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
